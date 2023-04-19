@@ -10,8 +10,9 @@ type Flags struct {
 	OutputFile string
 }
 
-type InitializedData struct {
+type EncoderInitializedData struct {
 	Characters [][]int
 	Depth      int
 	Bits       int
+	Key        string
 }

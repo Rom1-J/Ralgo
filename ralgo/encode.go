@@ -4,24 +4,43 @@ import (
 	"fmt"
 	"github.com/Rom1-J/Ralgo/ralgo/utils"
 	"math/rand"
+	"strconv"
+	"strings"
 )
 
-func Encode(message string) {
-	initializedData := utils.InitializeData(message)
+func Encode(message string, couple utils.KeyCouple) {
+	initializedData := utils.EncoderInitializeData(message, couple)
 
 	matrix := initializedData.Characters
 
-	rows, cols := initializedData.Depth, len(matrix)
+	fmt.Printf("bits: %d\n", initializedData.Bits)
+	fmt.Printf("depth: %d\n", initializedData.Depth)
+	fmt.Printf("key: %s\n", initializedData.Key)
+
+	fmt.Println()
+
+	rows, _ := initializedData.Depth, len(matrix)
 	for _, col := range matrix {
 		rand.Shuffle(rows, func(i, j int) {
 			col[i], col[j] = col[j], col[i]
 		})
 	}
 
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols; j++ {
-			fmt.Printf("%3d ", matrix[j][i])
+	matrix = utils.TransposeMatrix(matrix)
+
+	output := initializedData.Key
+
+	for _, el := range utils.FlattenMatrix(matrix) {
+		binaryEl := strconv.FormatInt(int64(el), 2)
+
+		for _, char := range strings.Repeat("0", initializedData.Bits-len(binaryEl)) + binaryEl {
+			if char == 48 {
+				output += couple.A
+			} else {
+				output += couple.B
+			}
 		}
-		fmt.Println()
 	}
+
+	fmt.Println(output)
 }

@@ -9,5 +9,8 @@ func main() {
 	flags := utils.GetFlags()
 	utils.CheckFlags(flags)
 
-	ralgo.Encode(flags.InputText)
+	ralgo.Encode(flags.InputText, utils.KeyCouple{
+		A: ".",
+		B: "*",
+	})
 }

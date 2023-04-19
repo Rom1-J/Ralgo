@@ -2,9 +2,10 @@ package utils
 
 import (
 	"strconv"
+	"strings"
 )
 
-func InitializeData(message string) InitializedData {
+func EncoderInitializeData(message string, couple KeyCouple) EncoderInitializedData {
 	var characters [][]int
 
 	depth := 0
@@ -36,9 +37,12 @@ func InitializeData(message string) InitializedData {
 		}
 	}
 
-	return InitializedData{
+	key := strings.Repeat(couple.A, depth) + strings.Repeat(couple.B, bits) + strings.Repeat(couple.A, bits+1)
+
+	return EncoderInitializedData{
 		Characters: characters,
 		Depth:      depth,
 		Bits:       bits,
+		Key:        key,
 	}
 }
