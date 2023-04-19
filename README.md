@@ -30,7 +30,10 @@ Then you can find the executable inside `dist/` directory.
 
 ```bash
 $ ./ralgo -h
-# todo
+# -input string
+#         Input text
+#   -output string
+#         Output file (default "stdout")
 ```
 
 ---

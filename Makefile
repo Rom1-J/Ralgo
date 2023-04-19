@@ -5,7 +5,7 @@ ARCH ?= $(shell uname -m)
 BUILDINFOSDET ?=
 
 SOFT_NAME    := ralgo
-SOFT_VERSION := $(shell git describe --tags $(git rev-list --tags --max-count=1))
+SOFT_VERSION := $(or $(shell git describe --tags $(git rev-list --tags --max-count=1)), v0.0)
 VERSION_PKG   := $(shell echo $(SOFT_VERSION) | sed 's/^v//g')
 ARCH          := x86_64
 URL           := https://github.com/Rom1-J/Ralgo
@@ -17,7 +17,7 @@ OUTPUT_SOFT := $(DIST_DIR)ralgo-$(SOFT_VERSION)-$(GOOS)-$(ARCH)$(EXTENSION)
 
 .PHONY: vet
 vet:
-	go vet ralgo/main.go
+	go vet main.go
 
 .PHONY: prepare
 prepare:
@@ -28,5 +28,5 @@ clean:
 	rm -rf $(DIST_DIR)
 
 .PHONY: build
-build: prepare
-	go build -ldflags $(LDFLAGS) -o $(OUTPUT_SOFT) ralgo
+build: clean prepare
+	go build -ldflags $(LDFLAGS) -o $(OUTPUT_SOFT)
