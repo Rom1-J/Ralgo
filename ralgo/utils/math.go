@@ -1,21 +1,36 @@
 package utils
 
-func PrimeFactors(n int) (pfs []int) {
-	for n%2 == 0 {
-		pfs = append(pfs, 2)
-		n = n / 2
-	}
+import (
+	"bytes"
+	"strconv"
+)
 
-	for i := 3; i*i <= n; i = i + 2 {
+func PrimeFactors(n int) []int64 {
+	var factors []int64
+
+	for i := 2; i <= n; i++ {
 		for n%i == 0 {
-			pfs = append(pfs, i)
-			n = n / i
+			factors = append(factors, int64(i))
+			n /= i
 		}
 	}
 
-	if n > 2 {
-		pfs = append(pfs, n)
-	}
+	return factors
+}
 
-	return
+func EuclideanDivision(dividend, divisor int) (quotient, remainder int) {
+	quotient = dividend / divisor
+	remainder = dividend % divisor
+
+	return quotient, remainder
+}
+
+func CoupleToInt64(chunk []byte, couple KeyCouple) int64 {
+	chunk = bytes.Replace(chunk, []byte(couple.A), []byte("0"), -1)
+	chunk = bytes.Replace(chunk, []byte(couple.B), []byte("1"), -1)
+
+	s, err := strconv.ParseInt(string(chunk), 2, 64)
+	CheckError(err)
+
+	return s
 }

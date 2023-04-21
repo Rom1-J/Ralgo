@@ -8,81 +8,92 @@ import (
 	"strings"
 )
 
-func EncoderInitializeData(message string, couple utils.KeyCouple) utils.EncoderInitializedData {
-	var characters [][]int
+func EncoderInitializeData(data []byte, couple utils.KeyCouple) utils.EncoderInitializedData {
+	var bytes [][]int64
+
+	factorMap := map[byte][]int64{
+		0: {0},
+		1: {1},
+	}
 
 	depth := 0
 
-	highestFactor := 0
+	highestFactor := int64(0)
 	bits := 0
 
-	for _, char := range message {
-		factors := utils.PrimeFactors(int(char))
+	for _, byteValue := range data {
+		factors := []int64{0}
+
+		if f, ok := factorMap[byteValue]; ok {
+			factors = f
+		} else {
+			f = utils.PrimeFactors(int(byteValue))
+			factorMap[byteValue] = f
+			factors = f
+		}
 
 		if len(factors) > depth {
 			depth = len(factors)
 		}
 
-		for _, factor := range factors {
-			if factor > highestFactor {
-				highestFactor = factor
-			}
+		lastFactor := factors[len(factors)-1]
+		if lastFactor > highestFactor {
+			highestFactor = lastFactor
 		}
 
-		characters = append(characters, factors)
+		bytes = append(bytes, factors)
 	}
 
-	bits = len(strconv.FormatInt(int64(highestFactor), 2))
+	bits = len(strconv.FormatInt(highestFactor, 2))
 
-	for i := range characters {
-		for len(characters[i]) < depth {
-			characters[i] = append(characters[i], 1)
+	for i := range bytes {
+		for len(bytes[i]) < depth {
+			bytes[i] = append(bytes[i], 1)
 		}
 	}
 
-	key := strings.Repeat(couple.A, depth) + strings.Repeat(couple.B, bits) + strings.Repeat(couple.A, bits) + couple.B
+	key := strings.Repeat(couple.A, depth) + strings.Repeat(couple.B, bits) + couple.A
 
 	return utils.EncoderInitializedData{
-		Characters: characters,
+		Characters: bytes,
 		Depth:      depth,
 		Bits:       bits,
 		Key:        key,
 	}
 }
 
-func Encode(message string, couple utils.KeyCouple) {
-	initializedData := EncoderInitializeData(message, couple)
+func Encode(data []byte, couple utils.KeyCouple) {
+	initializedData := EncoderInitializeData(data, couple)
 
 	matrix := initializedData.Characters
 
-	fmt.Printf("bits: %d\n", initializedData.Bits)
-	fmt.Printf("depth: %d\n", initializedData.Depth)
-	fmt.Printf("key: %s\n", initializedData.Key)
+	cols := initializedData.Depth
 
-	fmt.Println()
-
-	rows, _ := initializedData.Depth, len(matrix)
-	for _, col := range matrix {
-		rand.Shuffle(rows, func(i, j int) {
-			col[i], col[j] = col[j], col[i]
+	for _, row := range matrix {
+		rand.Shuffle(cols, func(i, j int) {
+			row[i], row[j] = row[j], row[i]
 		})
 	}
 
 	matrix = utils.TransposeMatrix(matrix)
 
-	output := initializedData.Key
+	fmt.Print(initializedData.Key)
 
 	for _, el := range utils.FlattenMatrix(matrix) {
-		binaryEl := strconv.FormatInt(int64(el), 2)
+		binaryEl := strconv.FormatInt(el, 2)
 
-		for _, char := range strings.Repeat("0", initializedData.Bits-len(binaryEl)) + binaryEl {
-			if char == 48 {
-				output += couple.A
-			} else {
-				output += couple.B
-			}
-		}
+		fmt.Print(
+			strings.Replace(
+				strings.Replace(
+					strings.Repeat("0", initializedData.Bits-len(binaryEl))+binaryEl,
+					"0",
+					couple.A,
+					-1,
+				),
+				"1",
+				couple.B,
+				-1,
+			),
+		)
 	}
-
-	fmt.Println(output)
 }

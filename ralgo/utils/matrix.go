@@ -2,7 +2,7 @@ package utils
 
 import "fmt"
 
-func PrintMatrix(matrix [][]int) {
+func PrintMatrix(matrix [][]int64) {
 	rows, cols := len(matrix), len(matrix[0])
 
 	for i := 0; i < rows; i++ {
@@ -13,8 +13,8 @@ func PrintMatrix(matrix [][]int) {
 	}
 }
 
-func FlattenMatrix(matrix [][]int) []int {
-	var flatMat []int
+func FlattenMatrix(matrix [][]int64) []int64 {
+	var flatMat []int64
 
 	for _, row := range matrix {
 		flatMat = append(flatMat, row...)
@@ -23,12 +23,12 @@ func FlattenMatrix(matrix [][]int) []int {
 	return flatMat
 }
 
-func TransposeMatrix(matrix [][]int) [][]int {
+func TransposeMatrix(matrix [][]int64) [][]int64 {
 	rows, cols := len(matrix), len(matrix[0])
 
-	transposed := make([][]int, cols)
+	transposed := make([][]int64, cols)
 	for i := range transposed {
-		transposed[i] = make([]int, rows)
+		transposed[i] = make([]int64, rows)
 	}
 
 	for i := 0; i < rows; i++ {

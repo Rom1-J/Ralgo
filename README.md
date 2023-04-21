@@ -1,5 +1,4 @@
 # Ralgo
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FRom1-J%2FRalgo.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FRom1-J%2FRalgo?ref=badge_shield)
 [![Github release action](https://github.com/Rom1-J/Ralgo/workflows/Release/badge.svg)](https://github.com/Rom1-J/Ralgo/actions?query=workflow%3ARelease)
 [![Github commit action](https://github.com/Rom1-J/Ralgo/workflows/Building/badge.svg)](https://github.com/Rom1-J/Ralgo/actions?query=workflow%3AGo)
 
@@ -66,4 +65,4 @@ Runs:
 
 
 ## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FRom1-J%2FRalgo.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FRom1-J%2FRalgo?ref=badge_large)
++ todo

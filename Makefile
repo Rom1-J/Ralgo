@@ -1,5 +1,6 @@
 EXTENSION ?=
 DIST_DIR ?= dist/
+EXTRA_DIR ?= extra/
 GOOS ?= linux
 ARCH ?= $(shell uname -m)
 BUILDINFOSDET ?=
@@ -26,6 +27,14 @@ prepare:
 .PHONY: clean
 clean:
 	rm -rf $(DIST_DIR)
+
+.PHONY: small_sample
+small_sample:
+	dd if=/dev/urandom of=$(EXTRA_DIR)example/1K bs=1K count=1
+
+.PHONY: sample
+sample:
+	dd if=/dev/urandom of=$(EXTRA_DIR)example/1M bs=1M count=1
 
 .PHONY: build
 build: clean prepare

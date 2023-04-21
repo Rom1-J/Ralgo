@@ -8,20 +8,20 @@ type KeyCouple struct {
 type Flags struct {
 	Encode     bool
 	Decode     bool
-	InputText  string
+	InputData  []byte
 	OutputFile string
 	Couple     string
 }
 
 type EncoderInitializedData struct {
-	Characters [][]int
+	Characters [][]int64
 	Depth      int
 	Bits       int
 	Key        string
 }
 
 type DecoderInitializedData struct {
-	Chunks [][]string
+	Chunks [][]byte
 	Depth  int
 	Bits   int
 }

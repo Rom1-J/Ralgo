@@ -10,14 +10,12 @@ func main() {
 	utils.CheckFlags(flags)
 
 	if flags.Encode {
-		ralgo.Encode(flags.InputText, utils.KeyCouple{
+		ralgo.Encode(flags.InputData, utils.KeyCouple{
 			A: string(flags.Couple[0]),
 			B: string(flags.Couple[1]),
 		})
-	}
-
-	if flags.Decode {
-		ralgo.Decode(flags.InputText, utils.KeyCouple{
+	} else if flags.Decode {
+		ralgo.Decode(flags.InputData, utils.KeyCouple{
 			A: string(flags.Couple[0]),
 			B: string(flags.Couple[1]),
 		})
