@@ -9,8 +9,17 @@ func main() {
 	flags := utils.GetFlags()
 	utils.CheckFlags(flags)
 
-	ralgo.Encode(flags.InputText, utils.KeyCouple{
-		A: ".",
-		B: "*",
-	})
+	if flags.Encode {
+		ralgo.Encode(flags.InputText, utils.KeyCouple{
+			A: string(flags.Couple[0]),
+			B: string(flags.Couple[1]),
+		})
+	}
+
+	if flags.Decode {
+		ralgo.Decode(flags.InputText, utils.KeyCouple{
+			A: string(flags.Couple[0]),
+			B: string(flags.Couple[1]),
+		})
+	}
 }

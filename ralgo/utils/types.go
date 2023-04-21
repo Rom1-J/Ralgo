@@ -6,8 +6,11 @@ type KeyCouple struct {
 }
 
 type Flags struct {
+	Encode     bool
+	Decode     bool
 	InputText  string
 	OutputFile string
+	Couple     string
 }
 
 type EncoderInitializedData struct {
@@ -15,4 +18,10 @@ type EncoderInitializedData struct {
 	Depth      int
 	Bits       int
 	Key        string
+}
+
+type DecoderInitializedData struct {
+	Chunks [][]string
+	Depth  int
+	Bits   int
 }

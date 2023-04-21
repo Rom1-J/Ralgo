@@ -8,8 +8,50 @@ import (
 	"strings"
 )
 
+func EncoderInitializeData(message string, couple utils.KeyCouple) utils.EncoderInitializedData {
+	var characters [][]int
+
+	depth := 0
+
+	highestFactor := 0
+	bits := 0
+
+	for _, char := range message {
+		factors := utils.PrimeFactors(int(char))
+
+		if len(factors) > depth {
+			depth = len(factors)
+		}
+
+		for _, factor := range factors {
+			if factor > highestFactor {
+				highestFactor = factor
+			}
+		}
+
+		characters = append(characters, factors)
+	}
+
+	bits = len(strconv.FormatInt(int64(highestFactor), 2))
+
+	for i := range characters {
+		for len(characters[i]) < depth {
+			characters[i] = append(characters[i], 1)
+		}
+	}
+
+	key := strings.Repeat(couple.A, depth) + strings.Repeat(couple.B, bits) + strings.Repeat(couple.A, bits) + couple.B
+
+	return utils.EncoderInitializedData{
+		Characters: characters,
+		Depth:      depth,
+		Bits:       bits,
+		Key:        key,
+	}
+}
+
 func Encode(message string, couple utils.KeyCouple) {
-	initializedData := utils.EncoderInitializeData(message, couple)
+	initializedData := EncoderInitializeData(message, couple)
 
 	matrix := initializedData.Characters
 
